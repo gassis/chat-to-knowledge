@@ -1,0 +1,8 @@
+openai
+neo4j
+python-dotenv
+langchain 
+streamlit 
+tiktoken
+langchain-community 
+langchain_openai
