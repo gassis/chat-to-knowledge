@@ -1,6 +1,6 @@
 # import dependencies
 import os
-rom openai import OpenAI
+from openai import OpenAI
 import streamlit as st
 
 from langchain.chains import RetrievalQA
