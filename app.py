@@ -121,8 +121,18 @@ if prompt := st.chat_input("O que deseja saber?"):
     st.session_state.messages.append({"role": "user", "content": prompt})
     with st.chat_message("user"):
         st.markdown(prompt)
+ # Add user message to chat history
+    st.session_state.messages.append({"role": "user", "content": prompt})
 
+    response = f"Echo: {prompt}"
+    # Display assistant response in chat message container
     with st.chat_message("assistant"):
+        st.markdown(response)
+    # Add assistant response to chat history
+    st.session_state.messages.append({"role": "assistant", "content": response})
+    
+
+#    with st.chat_message("assistant"):
 #        stream = client.chat.completions.create(
 #            model=st.session_state["openai_model"],
 #            messages=[
@@ -131,8 +141,8 @@ if prompt := st.chat_input("O que deseja saber?"):
 #            ],
 #            stream=True,
 #        )
-        with st.spinner("Thinking..."):
-          response = generate_response(prompt)
-          response = st.write(response)
-    st.session_state.messages.append({"role": "assistant", "content": response})
+#        with st.spinner("Thinking..."):
+#          response = generate_response(prompt)
+#          response = st.write(response)
+#    st.session_state.messages.append({"role": "assistant", "content": response})
 
