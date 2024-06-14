@@ -127,7 +127,7 @@ if prompt := st.chat_input("O que deseja saber?"):
 #            ],
 #            stream=True,
 #        )
-        with st.spinner("Thinking...")
+        with st.spinner("Thinking..."):
           response = generate_response(prompt)
           response = st.write(response)
     st.session_state.messages.append({"role": "assistant", "content": response})
