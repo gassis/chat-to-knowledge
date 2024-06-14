@@ -97,7 +97,7 @@ def configure_qa_structure_rag_chain(llm, embeddings, embeddings_store_url, user
 
 rag_chain = configure_qa_structure_rag_chain(llm, embeddings, embeddings_store_url=NEO4J_URI, username=NEO4J_USERNAME, password=NEO4J_PASSWORD)
 
-st.title("ChatGPT-like clone")
+st.title("Chat-to-Knowledge")
 
 client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 
