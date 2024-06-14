@@ -16,10 +16,16 @@ from neo4j import GraphDatabase
 from langchain_community.graphs.neo4j_graph import Neo4jGraph
 
 # Global constants
-VECTOR_INDEX_NAME = 'chunk_embedding'
-VECTOR_NODE_LABEL = 'Chunk'
-VECTOR_SOURCE_PROPERTY = 'text'
-VECTOR_EMBEDDING_PROPERTY = 'textEmbedding'
+NEO4J_URI = st.secrets['NEO4J_URI']
+NEO4J_DATABASE = st.secrets['NEO4J_DATABASE']
+NEO4J_USERNAME= st.secrets['NEO4J_USERNAME']
+NEO4J_PASSWORD= st.secrets['NEO4J_PASSWORD']
+OPENAI_API_KEY = st.secrets['OPENAI_API_KEY']
+
+VECTOR_INDEX_NAME = "embedingIndex"
+VECTOR_NODE_LABEL = "Chunk"
+VECTOR_NODE_PROPERTY = "text"
+VECTOR_EMBEDDING_PROPERTY = "embedding"
 
 graph = Neo4jGraph(
     url=NEO4J_URI,
@@ -66,10 +72,10 @@ def configure_qa_structure_rag_chain(llm, embeddings, embeddings_store_url, user
         username=username,
         password=password,
         database='neo4j',  # neo4j by default
-        index_name="embedingIndex",  # vector index name
-        node_label="Chunk",  # embedding node label
-        embedding_node_property="embedding",  # embedding value property
-        text_node_property="text",  # text by default
+        index_name=VECTOR_INDEX_NAME,  # vector index name
+        node_label=VECTOR_NODE_LABEL,  # embedding node label
+        embedding_node_property=VECTOR_EMBEDDING_PROPERTY,  # embedding value property
+        text_node_property=VECTOR_NODE_PROPERTY,  # text by default
         retrieval_query="""
               WITH node AS embNode, score ORDER BY score DESC LIMIT 10
               MATCH (embNode) -[:CHUNK_OF]-> (part) -[*]-> (document:Document) WHERE embNode.embedding IS NOT NULL
