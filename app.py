@@ -21,8 +21,6 @@ VECTOR_NODE_LABEL = 'Chunk'
 VECTOR_SOURCE_PROPERTY = 'text'
 VECTOR_EMBEDDING_PROPERTY = 'textEmbedding'
 
-device = "cuda" if torch.cuda.is_available() else "cpu"
-
 graph = Neo4jGraph(
     url=NEO4J_URI,
     username=NEO4J_USERNAME,
