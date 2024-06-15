@@ -128,7 +128,7 @@ if prompt := st.chat_input():
     response = chain_with_history.invoke({"question": prompt}, config)
     st.chat_message("ai").write(response['answer'])
     source = ""
-    for item in result['source_documents']:
+    for item in response['source_documents']:
       for subitem in item:
         for el in subitem:
           if type(el) == dict:
