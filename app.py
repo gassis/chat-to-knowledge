@@ -129,6 +129,6 @@ if prompt := st.chat_input():
     st.chat_message("ai").write(response['answer'])
     source = ""
     for item in response['source_documents']:
-        for subitem in item['metadata']:
-            source += subitem['source']
+        for subitem in item:
+            source += subitem['metadata']
     st.chat_message("ai").write(source)
