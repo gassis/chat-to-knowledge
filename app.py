@@ -127,15 +127,6 @@ if prompt := st.chat_input("O que deseja saber?"):
         st.markdown(prompt)
 
     with st.chat_message("assistant"):
-#        stream = client.chat.completions.create(
-#            model=st.session_state["openai_model"],
-#            messages=[
-#                {"role": m["role"], "content": m["content"]}
-#                for m in st.session_state.messages
-#            ],
-#            stream=True,
-#        )
-        with st.spinner("Thinking..."):
-          response = generate_response(prompt)
-          response = st.write(response)
+        response = generate_response(prompt)
+        response = st.write(response)
     st.session_state.messages.append({"role": "assistant", "content": response})
