@@ -47,7 +47,8 @@ def configure_qa_structure_rag_chain(llm, embeddings, embeddings_store_url, user
     # RAG response based on vector search and retrieval of structured chunks
 
     general_system_template = """Use as seguintes partes do contexto para responder à pergunta no final.
-    Suas respostas deve ser completas e estruturadas.
+    Suas respostas deve ser completas e estruturadas. Utilize prioritariamente informações sobre o Instituto 
+    Federal de Educação, Ciência e Tecnologia de Goiás ou IFG.
     Se você não sabe a resposta, apenas diga que não sabe, não tente inventar uma resposta.
 
     {summaries}
