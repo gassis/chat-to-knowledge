@@ -136,5 +136,5 @@ if prompt := st.chat_input():
     with st.chat_message("assistant"):
         with st.spinner("Thinking..."):
           response = chain_with_history.invoke({"question": prompt}, config)
-          response = st.write(response)
+          response = st.write(response['answer'])
     st.session_state.messages.append({"role": "assistant", "content": response})
