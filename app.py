@@ -101,7 +101,7 @@ def configure_qa_structure_rag_chain(llm, embeddings, embeddings_store_url, user
 
 rag_chain = configure_qa_structure_rag_chain(llm, embeddings, embeddings_store_url=NEO4J_URI, username=NEO4J_USERNAME, password=NEO4J_PASSWORD)
 
-st.title("Chat-to-Knowledge")
+st.title("Chat-to-Knowledge (IFG)")
 
 # Set up memory
 msgs = StreamlitChatMessageHistory(key="langchain_messages")
