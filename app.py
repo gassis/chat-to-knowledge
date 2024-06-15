@@ -127,4 +127,7 @@ if prompt := st.chat_input():
     config = {"configurable": {"session_id": "any"}}
     response = chain_with_history.invoke({"question": prompt}, config)
     st.chat_message("ai").write(response['answer'])
-    st.chat_message("ai").write(response['source_documents'])
+    source = ""
+    for item in response['source_documents']:
+        source += item['metadata']['source']
+    st.chat_message("ai").write(source)
