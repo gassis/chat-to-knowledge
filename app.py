@@ -99,42 +99,41 @@ rag_chain = configure_qa_structure_rag_chain(llm, embeddings, embeddings_store_u
 
 st.title("Chat-to-Knowledge")
 
-client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
+# Set up memory
+msgs = StreamlitChatMessageHistory(key="langchain_messages")
+if len(msgs.messages) == 0:
+    msgs.add_ai_message("How can I help you?")
 
-if "openai_model" not in st.session_state:
-    st.session_state["openai_model"] = "gpt-3.5-turbo"
+view_messages = st.expander("View the message contents in session state")
 
-if "messages" not in st.session_state:
-    st.session_state.messages = []
+chain_with_history = RunnableWithMessageHistory(
+    rag_chain,
+    lambda session_id: msgs,
+    input_messages_key="question",
+    history_messages_key="history",
+)
 
-for message in st.session_state.messages:
-    with st.chat_message(message["role"]):
-        st.markdown(message["content"])
-        
-# Function for generating LLM response
-def generate_response(prompt_input):
-    input_data = {"question": prompt_input}
-    result = rag_chain.invoke(input_data)
-    return result['answer']
+# Render current messages from StreamlitChatMessageHistory
+for msg in msgs.messages:
+    st.chat_message(msg.type).write(msg.content)
 
-if prompt := st.chat_input("O que deseja saber?"):
-    st.session_state.messages.append({"role": "user", "content": prompt})
-    with st.chat_message("user"):
-        st.markdown(prompt)
- # Add user message to chat history
-    st.session_state.messages.append({"role": "user", "content": prompt})
+# If user inputs a new prompt, generate and draw a new response
+if prompt := st.chat_input():
+    st.chat_message("human").write(prompt)
+    # Note: new messages are saved to history automatically by Langchain during run
+    config = {"configurable": {"session_id": "any"}}
+    response = chain_with_history.invoke({"question": prompt}, config)
+    st.chat_message("ai").write(response.content)
 
-    with st.chat_message("assistant"):
-        stream = client.chat.completions.create(
-            model=st.session_state["openai_model"],
-            messages=[
-                {"role": m["role"], "content": m["content"]}
-                for m in st.session_state.messages
-            ],
-            stream=True,
-        )
-        with st.spinner("Thinking..."):
-          response = generate_response(prompt)
-          response = st.write(response)
-    st.session_state.messages.append({"role": "assistant", "content": response})
+# Draw the messages at the end, so newly generated ones show up immediately
+with view_messages:
+    """
+    Message History initialized with:
+    ```python
+    msgs = StreamlitChatMessageHistory(key="langchain_messages")
+    ```
+
+    Contents of `st.session_state.langchain_messages`:
+    """
+    view_messages.json(st.session_state.langchain_messages)
 
