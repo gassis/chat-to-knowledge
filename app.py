@@ -127,5 +127,8 @@ if prompt := st.chat_input():
         st.markdown(prompt)
     # Note: new messages are saved to history automatically by Langchain during run
     config = {"configurable": {"session_id": "any"}}
-    response = chain_with_history.invoke({"question": prompt}, config)
-    st.chat_message("ai").write(response['answer'])
+    with st.chat_message("assistant"):
+        with st.spinner("Thinking..."):
+          response = chain_with_history.invoke({"question": prompt}, config)
+          response = st.write(response)
+    st.session_state.messages.append({"role": "assistant", "content": response})
